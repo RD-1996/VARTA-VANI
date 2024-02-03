@@ -5,18 +5,18 @@ import Signup from '../components/Authentication/Signup';
 
 const HomePage = () => {
   return (
-    <Container maxW="xl" centerContent>
+    <Container maxW={"md"} centerContent>
       <Box
         d="flex"
         justifyContent="center"
         p="3"
         bg="white"
         w="100%"
-        m="30px 0 15px 0"
+        m="20px 0 10px 0"
         borderRadius="lg"
         borderWidth="1px"
       >
-        <Text fontSize="4xl" fontFamily="work sans" textAlign="center">
+        <Text fontSize="2xl" fontFamily="work sans" textAlign="center">
           Varta-Vani
         </Text>
       </Box>
