@@ -30,7 +30,7 @@ const registerUser = asyncHandler(async (req, res) => {
             name: user.name,
             email: user.email,
             pic: user.pic,
-            token:generateToken(user._id)
+            token: generateToken(user._id)
         })
     }
     else {
@@ -39,28 +39,37 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 });
 
-const authUser = asyncHandler( async (req, res) => {
+const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
-    const user = await User.findOne({email});
+    const user = await User.findOne({ email });
 
-    console.log("user"+user);
-    if(user && (await user.matchPassword(password))){
+    console.log("user" + user);
+    if (user && (await user.matchPassword(password))) {
         res.json({
             _id: user._id,
             name: user.name,
             email: user.email,
             pic: user.pic,
-            token:generateToken(user._id)
+            token: generateToken(user._id)
         });
     }
     else {
         res.status(401);
         throw new Error("Invalid Email or Password");
     }
-}
+});
 
-)
+const allUsers = asyncHandler(async (req, res) => {
+    const keyword = req.query.search ? {
+        $or: [
+            { name: { $regex: req.query.search, $options: "i" } },
+            { email: { $regex: req.query.search, $options: "i" } },
+        ]
+    } : {};
+    const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+    res.send(users);
+});
 
 
-module.exports = { registerUser, authUser };
+module.exports = { registerUser, authUser, allUsers };
